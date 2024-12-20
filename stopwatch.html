@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stopwatch</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #FFF8E6; /* Cream */
+            color: #8D0B41; /* Dark Rose */
+        }
+
+        .stopwatch-container {
+            text-align: center;
+            background-color: #D6CFB4; /* Light Beige */
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+            width: 320px;
+            max-width: 100%;
+            transition: transform 0.3s ease;
+        }
+
+        .stopwatch-container:hover {
+            transform: scale(1.05);
+        }
+
+        .time-display {
+            font-size: 56px;
+            margin-bottom: 20px;
+            color: #8D0B41; /* Dark Rose */
+            transition: color 0.3s ease;
+        }
+
+        .buttons button {
+            padding: 12px 24px;
+            font-size: 18px;
+            margin: 5px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            color: #FFF8E6; /* Cream */
+            transition: background-color 0.3s ease;
+        }
+
+        #startStop {
+            background-color: #D39D55; /* Mustard */
+        }
+
+        #startStop:hover {
+            background-color: #8D0B41; /* Dark Rose */
+        }
+
+        #reset {
+            background-color: #D39D55; /* Mustard */
+        }
+
+        #reset:hover {
+            background-color: #8D0B41; /* Dark Rose */
+        }
+    </style>
+</head>
+<body>
+    <div class="stopwatch-container">
+        <h1>Stopwatch</h1>
+        <div class="time-display">
+            <span id="minutes">00</span>:<span id="seconds">00</span>:<span id="milliseconds">000</span>
+        </div>
+        <div class="buttons">
+            <button id="startStop">Start</button>
+            <button id="reset">Reset</button>
+        </div>
+    </div>
+    <script>
+        let minutes = 0;
+        let seconds = 0;
+        let milliseconds = 0;
+        let interval;
+
+        document.getElementById('startStop').addEventListener('click', function() {
+            if (this.textContent === 'Start') {
+                this.textContent = 'Stop';
+                startStopwatch();
+            } else {
+                this.textContent = 'Start';
+                stopStopwatch();
+            }
+        });
+
+        document.getElementById('reset').addEventListener('click', function() {
+            resetStopwatch();
+        });
+
+        function startStopwatch() {
+            interval = setInterval(function() {
+                milliseconds += 10;
+                if (milliseconds === 1000) {
+                    milliseconds = 0;
+                    seconds++;
+                }
+                if (seconds === 60) {
+                    seconds = 0;
+                    minutes++;
+                }
+
+                updateDisplay();
+            }, 10);
+        }
+
+        function stopStopwatch() {
+            clearInterval(interval);
+        }
+
+        function resetStopwatch() {
+            clearInterval(interval);
+            minutes = 0;
+            seconds = 0;
+            milliseconds = 0;
+            updateDisplay();
+            document.getElementById('startStop').textContent = 'Start';
+        }
+
+        function updateDisplay() {
+            document.getElementById('minutes').textContent = minutes.toString().padStart(2, '0');
+            document.getElementById('seconds').textContent = seconds.toString().padStart(2, '0');
+            document.getElementById('milliseconds').textContent = milliseconds.toString().padStart(3, '0');
+        }
+    </script>
+</body>
+</html>
